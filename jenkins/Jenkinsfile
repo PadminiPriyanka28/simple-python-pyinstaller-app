@@ -22,28 +22,16 @@ pipeline {
         stage('Install Python 3') {
             steps {
                 script {
-                    // Install Python 3 (Linux)
+                    // Install Python 3 and pip (no virtualenv or sudo)
                     sh '''
                         # Update package list
                         apt-get update -y
 
-                        # Install Python 3 and pip (no sudo)
+                        # Install Python 3 and pip
                         apt-get install -y python3 python3-pip
 
                         # Verify Python installation
                         python3 --version
-                    '''
-                }
-            }
-        }
-
-        stage('Set up Virtualenv') {
-            steps {
-                script {
-                    // Set up Virtual Environment for Python dependencies
-                    sh '''
-                        python3 -m venv venv
-                        source venv/bin/activate
                     '''
                 }
             }
@@ -54,8 +42,8 @@ pipeline {
                 script {
                     // Install dependencies from requirements.txt
                     sh '''
-                        source venv/bin/activate
-                        pip install -r requirements.txt
+                        # Install required dependencies
+                        pip3 install -r requirements.txt
                     '''
                 }
             }
