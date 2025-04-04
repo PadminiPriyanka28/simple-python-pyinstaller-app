@@ -1,87 +1,100 @@
-// // pipeline {
-// //     agent any
-// //     stages {
-// //         stage('Checkout') {
-// //             steps {
-// //                 git 'https://github.com/PadminiPriyanka28/simple-python-pyinstaller-app.git'
-// //             }
-// //         }
-// //         stage('Build') {
-// //             steps {
-// //                 sh 'pip install -r requirements.txt'
-// //                 sh 'pyinstaller --onefile main.py'
-// //             }
-// //         }
-// //     }
-// // }
+// // // pipeline {
+// // //     agent any
+// // //     stages {
+// // //         stage('Checkout') {
+// // //             steps {
+// // //                 git 'https://github.com/PadminiPriyanka28/simple-python-pyinstaller-app.git'
+// // //             }
+// // //         }
+// // //         stage('Build') {
+// // //             steps {
+// // //                 sh 'pip install -r requirements.txt'
+// // //                 sh 'pyinstaller --onefile main.py'
+// // //             }
+// // //         }
+// // //     }
+// // // }
+
+// pipeline {
+//     agent any
+
+//     stages {
+//         stage('Install Python 3') {
+//             steps {
+//                 script {
+//                     // Install Python 3 and pip (no virtualenv or sudo)
+//                     sh '''
+//                         # Update package list
+//                         apt-get update -y
+
+//                         # Install Python 3 and pip
+//                         apt-get install -y python3 python3-pip
+
+//                         # Verify Python installation
+//                         python3 --version
+//                     '''
+//                 }
+//             }
+//         }
+
+//         stage('Install Dependencies') {
+//             steps {
+//                 script {
+//                     // Install dependencies from requirements.txt
+//                     sh '''
+//                         # Install required dependencies
+//                         pip3 install -r requirements.txt
+//                     '''
+//                 }
+//             }
+//         }
+
+//         stage('Build') {
+//             steps {
+//                 script {
+//                     // Build your application here
+//                     echo 'Build step'
+//                 }
+//             }
+//         }
+
+//         stage('Test') {
+//             steps {
+//                 script {
+//                     // Run tests here
+//                     echo 'Test step'
+//                 }
+//             }
+//         }
+
+//         stage('Package') {
+//             steps {
+//                 script {
+//                     // Package your application here
+//                     echo 'Package step'
+//                 }
+//             }
+//         }
+
+//         stage('Deploy') {
+//             steps {
+//                 script {
+//                     // Deploy your application here
+//                     echo 'Deploy step'
+//                 }
+//             }
+//         }
+//     }
+// }
+
 
 pipeline {
-    agent any
-
+    agent any 
     stages {
-        stage('Install Python 3') {
+        stage('Build') { 
             steps {
-                script {
-                    // Install Python 3 and pip (no virtualenv or sudo)
-                    sh '''
-                        # Update package list
-                        apt-get update -y
-
-                        # Install Python 3 and pip
-                        apt-get install -y python3 python3-pip
-
-                        # Verify Python installation
-                        python3 --version
-                    '''
-                }
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                script {
-                    // Install dependencies from requirements.txt
-                    sh '''
-                        # Install required dependencies
-                        pip3 install -r requirements.txt
-                    '''
-                }
-            }
-        }
-
-        stage('Build') {
-            steps {
-                script {
-                    // Build your application here
-                    echo 'Build step'
-                }
-            }
-        }
-
-        stage('Test') {
-            steps {
-                script {
-                    // Run tests here
-                    echo 'Test step'
-                }
-            }
-        }
-
-        stage('Package') {
-            steps {
-                script {
-                    // Package your application here
-                    echo 'Package step'
-                }
-            }
-        }
-
-        stage('Deploy') {
-            steps {
-                script {
-                    // Deploy your application here
-                    echo 'Deploy step'
-                }
+                sh 'python -m py_compile sources/add2vals.py sources/calc.py' 
+                stash(name: 'compiled-results', includes: 'sources/*.py*') 
             }
         }
     }
