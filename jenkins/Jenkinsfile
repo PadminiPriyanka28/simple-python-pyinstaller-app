@@ -17,15 +17,13 @@
 
 
 pipeline {
-    agent {
-        docker {
-            image 'python:3.9'
-            args '-u root:root'
-        }
-    }
+    agent any  // Or use a label if you have specific agents
 
     stages {
         stage('Install Dependencies') {
+            agent {
+                docker { image 'python:3.9' }
+            }
             steps {
                 sh 'pip install -r requirements.txt'
             }
