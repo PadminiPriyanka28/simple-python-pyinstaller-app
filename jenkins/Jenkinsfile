@@ -1,15 +1,39 @@
+// pipeline {
+//     agent any
+//     stages {
+//         stage('Checkout') {
+//             steps {
+//                 git 'https://github.com/PadminiPriyanka28/simple-python-pyinstaller-app.git'
+//             }
+//         }
+//         stage('Build') {
+//             steps {
+//                 sh 'pip install -r requirements.txt'
+//                 sh 'pyinstaller --onefile main.py'
+//             }
+//         }
+//     }
+// }
+
+
 pipeline {
-    agent any
-    stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/PadminiPriyanka28/simple-python-pyinstaller-app.git'
-            }
+    agent {
+        docker {
+            image 'python:3.9'
+            args '-u root:root'
         }
-        stage('Build') {
+    }
+
+    stages {
+        stage('Install Dependencies') {
             steps {
                 sh 'pip install -r requirements.txt'
-                sh 'pyinstaller --onefile main.py'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'pyinstaller --onefile hello.py'
             }
         }
     }
