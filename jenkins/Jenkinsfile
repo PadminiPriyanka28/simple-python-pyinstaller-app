@@ -81,3 +81,20 @@ pipeline {
 
         stage('Package') {
             steps {
+                script {
+                    // Package your application here
+                    echo 'Package step'
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    // Deploy your application here
+                    echo 'Deploy step'
+                }
+            }
+        }
+    }
+}
