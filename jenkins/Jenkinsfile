@@ -15,23 +15,18 @@
 //     }
 // }
 
-
 pipeline {
-    agent any  // Or use a label if you have specific agents
-
-    stages {
-        stage('Install Dependencies') {
-            agent {
-                docker { image 'python:3.9' }
-            }
-            steps {
-                sh 'pip install -r requirements.txt'
-            }
+    agent {
+        docker {
+            image 'python:3.9'
+            label 'my-node'
         }
-
+    }
+    stages {
         stage('Build') {
             steps {
-                sh 'pyinstaller --onefile hello.py'
+                echo 'Building with Python Docker image'
+                sh 'pip install -r requirements.txt'
             }
         }
     }
