@@ -16,17 +16,15 @@
 // }
 
 pipeline {
-    agent {
-        docker {
-            image 'python:3.9'
-            label 'my-node'
-        }
-    }
+    agent any
     stages {
         stage('Build') {
             steps {
-                echo 'Building with Python Docker image'
-                sh 'pip install -r requirements.txt'
+                script {
+                    docker.image('python:3.9').inside {
+                        sh 'pip install -r requirements.txt'
+                    }
+                }
             }
         }
     }
