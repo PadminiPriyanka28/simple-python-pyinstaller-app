@@ -17,14 +17,50 @@
 
 pipeline {
     agent any
+
     stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the repository
+                git 'https://github.com/PadminiPriyanka28/simple-python-pyinstaller-app.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                // Install dependencies without Docker
+                script {
+                    // If you're using a virtual environment, activate it here (optional)
+                    sh 'pip install -r requirements.txt'  // or use `python -m pip install -r requirements.txt`
+                }
+            }
+        }
+
         stage('Build') {
             steps {
-                script {
-                    docker.image('python:3.9').inside {
-                        sh 'pip install -r requirements.txt'
-                    }
-                }
+                // Build your Python app
+                sh 'python setup.py build'  // Adjust this to fit your app's build process
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Run tests
+                sh 'pytest'  // or any other testing framework
+            }
+        }
+
+        stage('Package') {
+            steps {
+                // If you want to package it, for example with PyInstaller
+                sh 'pyinstaller your_script.py'  // Adjust this to your build requirements
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Add your deployment steps here
+                echo 'Deploying application...'
             }
         }
     }
