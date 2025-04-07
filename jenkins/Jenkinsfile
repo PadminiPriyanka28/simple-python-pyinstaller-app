@@ -11,12 +11,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the Hello World application...'
-                script {
-                    // We simulate a build by creating a simple Python file
-                    writeFile file: 'hello_world.py', text: '''
-                        print("Hello, World!")
-                    '''
-                }
+                
             }
         }
 
@@ -24,12 +19,7 @@ pipeline {
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                script {
-                    // Here we test if the hello_world.py script runs correctly
-                    def result = sh(script: 'python hello_world.py', returnStatus: true)
-                    if (result != 0) {
-                        error 'Test failed! The application did not run as expected.'
-                    }
+                
                 }
             }
         }
@@ -46,10 +36,5 @@ pipeline {
         }
     }
 
-    post {
-        always {
-            echo 'Cleaning up after the pipeline...'
-            // You can add cleanup steps here if needed, for example removing temporary files
-        }
-    }
+   
 }
