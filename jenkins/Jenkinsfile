@@ -22,19 +22,16 @@ pipeline {
                 
                 }
             }
-        }
+    
 
         // Stage 3: Deploy the application
         stage('Deploy') {
             steps {
                 echo 'Deploying the Hello World application...'
-                script {
-                    // Here we simulate deployment, this can be modified based on your environment
-                    echo "Deployment successful! App deployed with message: 'Hello, World!'"
-                }
+            
             }
         }
     }
 
    
-}
+
