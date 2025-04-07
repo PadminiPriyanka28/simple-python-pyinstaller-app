@@ -1,20 +1,55 @@
 pipeline {
     agent any
+
+    environment {
+        APP_NAME = 'hello-world-app'
+        IMAGE_NAME = "python:3.10"
+    }
+
     stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/PadminiPriyanka28/simple-python-pyinstaller-app.git'
-            }
-        }
+        // Stage 1: Build the application
         stage('Build') {
             steps {
-                sh 'pip install -r requirements.txt'
-                sh 'pyinstaller --onefile main.py'
+                echo 'Building the Hello World application...'
+                script {
+                    // We simulate a build by creating a simple Python file
+                    writeFile file: 'hello_world.py', text: '''
+                        print("Hello, World!")
+                    '''
+                }
+            }
+        }
+
+        // Stage 2: Test the application
+        stage('Test') {
+            steps {
+                echo 'Running tests...'
+                script {
+                    // Here we test if the hello_world.py script runs correctly
+                    def result = sh(script: 'python hello_world.py', returnStatus: true)
+                    if (result != 0) {
+                        error 'Test failed! The application did not run as expected.'
+                    }
+                }
+            }
+        }
+
+        // Stage 3: Deploy the application
+        stage('Deploy') {
+            steps {
+                echo 'Deploying the Hello World application...'
+                script {
+                    // Here we simulate deployment, this can be modified based on your environment
+                    echo "Deployment successful! App deployed with message: 'Hello, World!'"
+                }
             }
         }
     }
+
+    post {
+        always {
+            echo 'Cleaning up after the pipeline...'
+            // You can add cleanup steps here if needed, for example removing temporary files
+        }
+    }
 }
-
-
-
-
